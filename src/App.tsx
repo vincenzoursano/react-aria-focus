@@ -5,9 +5,13 @@ import { DefaultPage } from './DefaultPage';
 import { MainPage } from './MainPage';
 import { WorkaroundPage } from './WorkaroundPage';
 
+const basename = '/react-aria-focus';
+
 const App = () => {
   const renderPage = () => {
-    switch (window.location.pathname) {
+    const path = window.location.pathname.replace(basename, '') || '/';
+
+    switch (path) {
       case '/':
         return <MainPage />;
       case '/default':
