@@ -1,69 +1,29 @@
-# React + TypeScript + Vite
+# React Aria Focus with Iframes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a proof of concept to demonstrate and solve an issue with `react-aria-components`'s Modal when interacting with elements outside of an iframe.
 
-Currently, two official plugins are available:
+## Motivation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+When using `react-aria-components`'s Modal, it traps the focus within the modal, which is the expected behavior for accessibility. However, when the modal is displayed inside an iframe, it also prevents interaction with elements outside the iframe. This is because the focus is trapped within the iframe's document.
 
-## Expanding the ESLint configuration
+This project explores different ways to solve this issue, allowing elements outside the iframe to be focused even when the modal is open.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Description
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The project consists of a main page that displays three iframes, each demonstrating a different scenario:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+*   **Default:** This page uses the default `Modal` from `react-aria-components`. When the modal is open, it's not possible to focus on the input field on the main page.
+*   **Custom Modal:** This page uses a custom `Modal` component that has been modified to allow focus on elements outside the iframe.
+*   **Workaround:** This page uses a workaround that involves disabling the focus containment of the modal by stopping the propagation of `keydown`, `focusin`, and `focusout` events.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## How to run
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  Install the dependencies:
+    ```bash
+    bun install
+    ```
+2.  Start the development server:
+    ```bash
+    bun run dev
+    ```
+3.  Open the browser and navigate to `http://localhost:5173/`.
